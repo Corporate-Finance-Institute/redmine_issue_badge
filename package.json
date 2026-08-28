@@ -1,0 +1,12 @@
+{
+  "name": "@cfi/redmine-issue-badge",
+  "version": "1.0.0-cfi.1",
+  "private": true,
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "test:js": "playwright test test/js --workers=1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.58.2"
+  }
+}

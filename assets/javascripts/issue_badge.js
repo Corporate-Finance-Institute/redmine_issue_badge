@@ -1,6 +1,8 @@
 // call issue_badge
 /* eslint-disable no-unused-vars */
 /* eslint-env jquery */
+// Modified by Corporate Finance Institute on 2026-08-28:
+// support the Redmine 7 top-menu DOM while retaining responsive placement.
 const badgeTemplate = `
 <div id="issue_badge">
   <li class="starting_point">
@@ -11,10 +13,50 @@ const badgeTemplate = `
 </div>
 `
 
+const changeBadgeLocation = () => {
+  const issueBadgeElement = document.getElementById('issue_badge')
+  if (!issueBadgeElement) return false
+
+  if (window.matchMedia('(max-width: 899px)').matches) {
+    const quickSearch = document.getElementById('quick-search')
+    if (!quickSearch) return false
+
+    quickSearch.insertBefore(issueBadgeElement, quickSearch.firstChild)
+    return true
+  }
+
+  const loggedas = document.getElementById('loggedas')
+  if (loggedas) {
+    loggedas.insertAdjacentElement('afterend', issueBadgeElement)
+    return true
+  }
+
+  // Redmine 7 removed #loggedas and renders the avatar account dropdown in
+  // #top-menu .profile-menu. Keep the badge visible immediately beside it.
+  const profileMenu = document.querySelector('#top-menu .profile-menu')
+  if (!profileMenu) return false
+
+  const account = profileMenu.querySelector('#account')
+  profileMenu.insertBefore(issueBadgeElement, account)
+  return true
+}
+
+const mountBadge = () => {
+  let issueBadgeElement = document.getElementById('issue_badge')
+  if (!issueBadgeElement) {
+    if (!document.body) return false
+
+    document.body.insertAdjacentHTML('beforeend', badgeTemplate)
+    issueBadgeElement = document.getElementById('issue_badge')
+  }
+
+  return changeBadgeLocation()
+}
+
 const loadBadge = (url, optionPollUrl) => {
   baseRequest(url, 'json').then((data) => {
-    document.getElementById('loggedas').insertAdjacentHTML('afterend', badgeTemplate)
-    changeBadgeLocation()
+    if (!mountBadge()) return
+
     let status = document.getElementById('issue_badge_number')
     let badgeLink = document.getElementById('link_issue_badge')
     document.getElementById('issue_badge').style.display = 'block'
@@ -45,7 +87,7 @@ const displayBadgeContents = () => {
 document.addEventListener('click', (event) => {
   const badgeContents = document.getElementById('issue_badge_contents')
 
-  if (badgeContents && event.target !== badgeContents) {
+  if (badgeContents && !badgeContents.contains(event.target)) {
     badgeContents.remove()
   }
 })
@@ -75,25 +117,7 @@ const pollBadgeCount = (pollingUrl) => {
   const pollInterval = setInterval(poll, 60000, pollingUrl)
 }
 
-// For responsive: change the place to display badge
-const changeBadgeLocation = () => {
-  const issueBadgeElement = document.getElementById('issue_badge')
-  if (window.matchMedia('(max-width: 899px)').matches) {
-    const quickSearch = document.getElementById('quick-search')
-    if (quickSearch) {
-      quickSearch.insertBefore(issueBadgeElement, quickSearch.firstChild)
-    }
-  } else {
-    const loggedas = document.getElementById('loggedas')
-    if (loggedas) {
-      loggedas.insertAdjacentElement('afterend', issueBadgeElement)
-    }
-  }
-}
-
-window.onresize = () => {
-  changeBadgeLocation()
-}
+window.addEventListener('resize', changeBadgeLocation)
 
 // Common method to send request and return response text
 const baseRequest = (url, type) => {
