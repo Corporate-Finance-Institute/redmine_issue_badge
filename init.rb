@@ -4,6 +4,7 @@
 #
 # This is a plugin for Redmine to show how many issues are assigned to me via badge.
 # Created by Akiko Takano.
+# Modified by Corporate Finance Institute on 2026-08-28 for Redmine 7.0.1.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -39,10 +40,10 @@ end
 Redmine::Plugin.register :redmine_issue_badge do
   begin
     name 'Redmine Issue Badge plugin'
-    author 'Akiko Takano'
+    author 'Akiko Takano; Corporate Finance Institute contributors'
     description 'Plugin to show the number of assigned issues with badge on top menu.'
-    version '1.0.0'
-    url 'https://github.com/akiko-pusu/redmine_issue_badge'
+    version '1.0.0-cfi.1'
+    url 'https://github.com/Corporate-Finance-Institute/redmine_issue_badge'
     author_url 'http://twitter.com/akiko_pusu'
     requires_redmine version_or_higher: '5.0'
 

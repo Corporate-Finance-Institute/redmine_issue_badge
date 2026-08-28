@@ -6,6 +6,27 @@
 
 Plugin to show the number of assigned issues with badge on top menu.
 
+## Corporate Finance Institute fork
+
+This repository is a public fork of
+[akiko-pusu/redmine_issue_badge](https://github.com/akiko-pusu/redmine_issue_badge),
+maintained by Corporate Finance Institute for current Redmine compatibility.
+The original author and copyright notices are retained, and the fork remains
+licensed under GNU GPL v2 as described in `LICENSE.txt` and `GPL.txt`.
+
+The `1.0.0-cfi.1` maintenance version adds Redmine 7.0.1/Rails 8 support:
+
+- mounts the badge in Redmine 7's profile menu while retaining the responsive
+  mobile placement and legacy `#loggedas` support;
+- uses the Rails 8-compatible positional enum syntax;
+- keeps My Account rendering safe when controller instance variables are not
+  initialized by another patch; and
+- restores the missing model-spec context terminator.
+
+The Redmine 7 DOM incompatibility was also identified independently in
+[hypcr's comparison](https://github.com/akiko-pusu/redmine_issue_badge/compare/main...hypcr:redmine_issue_badge:main).
+This fork implements its own responsive-compatible solution.
+
 For Redmine 3.x, please use version 0.7.0 or support-Redmine3 branch.
 
 ![screen shot](https://raw.githubusercontent.com/wiki/akiko-pusu/redmine_issue_badge/img/screen-in-case-no-assigned-issues.png)

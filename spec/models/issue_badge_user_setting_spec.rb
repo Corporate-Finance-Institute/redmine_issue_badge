@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Modified by Corporate Finance Institute on 2026-08-28: restore the missing
+# context terminator so the model spec parses and runs.
+
 require_relative '../spec_helper'
 require_relative '../rails_helper'
 
@@ -72,5 +75,5 @@ describe IssueBadgeUserSetting do
     #    expect(setting.reload.query_id).to eq(query_id)
     #  end
     # end
-  # end
+  end
 end

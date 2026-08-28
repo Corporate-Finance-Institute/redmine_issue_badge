@@ -1,0 +1,42 @@
+# Copyright 2026 Corporate Finance Institute
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+name: Compatibility
+
+on:
+  push:
+    branches: [main, feature/**]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-dom:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:js
+
+  redmine-7-boot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify plugin boot and migrations on official Redmine 7.0.1
+        run: |
+          docker run --rm \
+            -e RAILS_ENV=test \
+            -e REDMINE_NO_DB_MIGRATE=1 \
+            -v "$PWD:/usr/src/redmine/plugins/redmine_issue_badge:ro" \
+            redmine:7.0.1 \
+            bundle exec sh -lc '
+              bundle exec rake db:migrate redmine:plugins:migrate >/dev/null &&
+              bundle exec rails runner \
+                "abort unless Redmine::Plugin.find(:redmine_issue_badge).version.to_s == '\''1.0.0-cfi.1'\''"
+            '

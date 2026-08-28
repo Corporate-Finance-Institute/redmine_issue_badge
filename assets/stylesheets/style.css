@@ -1,3 +1,4 @@
+/* Modified by Corporate Finance Institute on 2026-08-28 for Redmine 7. */
 /*---- Plugin Settings -----*/
 div.checkbox label {
   cursor: pointer;
@@ -9,6 +10,27 @@ div.checkbox label {
 /*---- Badge and Notification area -----*/
 #issue_badge {
   float: right;
+}
+
+/* Redmine 7 places account controls in a flex-based profile menu. */
+#top-menu .profile-menu > #issue_badge {
+  align-items: center;
+  display: flex;
+  float: none;
+  height: 100%;
+}
+
+#top-menu .profile-menu > #issue_badge > li {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  list-style: none;
+}
+
+#top-menu .profile-menu > #issue_badge > li > div {
+  left: auto;
+  right: 0;
+  top: 100%;
 }
 
 #issue_badge > li {

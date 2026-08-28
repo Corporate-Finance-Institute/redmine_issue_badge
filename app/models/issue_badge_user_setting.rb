@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Modified by Corporate Finance Institute on 2026-08-28 for Rails 8 enum
+# compatibility used by Redmine 7.
+
 class IssueBadgeUserSetting < ActiveRecord::Base # rubocop:disable Rails/ApplicationRecord
   include Redmine::SafeAttributes
   belongs_to :user
@@ -8,7 +11,7 @@ class IssueBadgeUserSetting < ActiveRecord::Base # rubocop:disable Rails/Applica
 
   before_save :validate_query_id
 
-  enum badge_order: { oldest: 0, newest: 1 }
+  enum :badge_order, { oldest: 0, newest: 1 }
   scope :enabled, -> { where(enabled: true) }
   scope :show_assigned_to_group, -> { where(show_assigned_to_group: true) }
 
